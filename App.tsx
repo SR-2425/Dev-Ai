@@ -13,14 +13,14 @@ import { User } from './types';
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('Overview');
+  const [activeTab, setActiveTab] = useState('My Progress');
   const [enableTransitions, setEnableTransitions] = useState(() => {
     const saved = localStorage.getItem('devpulse_transitions');
     return saved === null ? true : saved === 'true';
   });
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const saved = localStorage.getItem('devpulse_theme');
-    return (saved as 'light' | 'dark') || 'dark';
+    return (saved as 'light' | 'dark') || 'light';
   });
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const App: React.FC = () => {
   const handleLogout = useCallback(() => {
     setUser(null);
     localStorage.removeItem('devpulse_user');
-    setActiveTab('Overview');
+    setActiveTab('My Progress');
   }, []);
 
   const toggleTheme = useCallback(() => {
@@ -67,18 +67,16 @@ const App: React.FC = () => {
 
   const renderContent = () => {
     if (!user) return null;
-    const commonProps = { enableTransitions };
     
-    // Inject custom classes if transitions are disabled
     const transitionClass = enableTransitions ? "" : "[&_*]:!animate-none [&_*]:!transition-none";
 
     return (
       <div className={transitionClass}>
         {(() => {
           switch (activeTab) {
-            case 'Overview': return <Dashboard user={user} theme={theme} onThemeToggle={toggleTheme} />;
+            case 'My Progress': return <Dashboard user={user} theme={theme} onThemeToggle={toggleTheme} />;
+            case 'Team Progress': return <TeamPulse />;
             case 'Automate': return <Automate />;
-            case 'Team Pulse': return <TeamPulse />;
             case 'Repositories': return <Repositories />;
             case 'Integrations': return <Integrations />;
             case 'Settings': return (
@@ -99,17 +97,17 @@ const App: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-deep-950">
+      <div className="flex items-center justify-center min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors">
         <div className="flex flex-col items-center">
-          <div className="w-10 h-10 border-2 border-aquatic-400 border-t-transparent rounded-full animate-spin"></div>
-          <p className="mt-4 text-aquatic-400/50 font-bold uppercase tracking-[0.2em] text-[10px]">Initializing Logic Audit</p>
+          <div className="w-10 h-10 border-2 border-brand-600 border-t-transparent rounded-full animate-spin"></div>
+          <p className="mt-4 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px]">Initializing Logic Audit</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`min-h-screen bg-deep-950 text-white selection:bg-aquatic-400/30 transition-colors`}>
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-brand-500/30 transition-colors`}>
       {!user ? (
         <Login onLogin={handleLogin} />
       ) : (
@@ -118,8 +116,6 @@ const App: React.FC = () => {
           onLogout={handleLogout} 
           activeTab={activeTab} 
           setActiveTab={setActiveTab}
-          enableTransitions={enableTransitions}
-          onTransitionToggle={toggleTransitions}
         >
           {renderContent()}
         </Layout>

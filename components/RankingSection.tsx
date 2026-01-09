@@ -16,23 +16,23 @@ const RankingSection: React.FC<RankingSectionProps> = ({ user }) => {
 
   return (
     <div className="glass-card overflow-hidden">
-      <div className="p-10 border-b border-white/5">
-        <h3 className="text-sm font-bold text-white/40 uppercase tracking-[0.3em]">Top Velocity Contributors</h3>
+      <div className="p-8 border-b border-slate-100 dark:border-slate-800">
+        <h3 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em]">Top Velocity Contributors</h3>
       </div>
       
-      <div className="divide-y divide-white/5">
+      <div className="divide-y divide-slate-100 dark:divide-slate-800">
         {topContributors.map((item, idx) => (
-          <div key={item.username} className={`flex items-center justify-between p-8 transition-colors ${item.username === user.githubUsername ? 'bg-white/5' : 'hover:bg-white/[0.02]'}`}>
+          <div key={item.username} className={`flex items-center justify-between p-6 transition-colors ${item.username === user.githubUsername ? 'bg-brand-50/50 dark:bg-brand-900/10' : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'}`}>
             <div className="flex items-center gap-6">
-              <span className="text-[10px] font-black text-white/20 w-4">{String(idx + 1).padStart(2, '0')}</span>
-              <img src={item.avatar} className="w-10 h-10 rounded-xl border border-white/10" alt={item.username} />
+              <span className="text-[10px] font-black text-slate-300 w-4">{String(idx + 1).padStart(2, '0')}</span>
+              <img src={item.avatar} className="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-700" alt={item.username} />
               <div>
-                <p className="text-sm font-bold text-white">@{item.username}</p>
-                <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">{item.score.toLocaleString()} XP</p>
+                <p className="text-sm font-bold text-slate-900 dark:text-white">@{item.username}</p>
+                <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">{item.score.toLocaleString()} XP</p>
               </div>
             </div>
             <div className={`text-[9px] font-black px-2 py-0.5 rounded ${
-              item.trend === 'up' ? 'text-aquatic-400' : item.trend === 'down' ? 'text-rose-400' : 'text-white/20'
+              item.trend === 'up' ? 'text-brand-600' : item.trend === 'down' ? 'text-rose-600' : 'text-slate-400'
             }`}>
               {item.trend === 'up' && '▲'}
               {item.trend === 'down' && '▼'}
@@ -42,8 +42,8 @@ const RankingSection: React.FC<RankingSectionProps> = ({ user }) => {
         ))}
       </div>
       
-      <button className="w-full p-8 text-[10px] font-black text-white/40 hover:text-white uppercase tracking-[0.4em] transition-colors border-t border-white/5">
-        View Full Contributor Directory
+      <button className="w-full p-6 text-[10px] font-black text-slate-400 hover:text-brand-600 uppercase tracking-[0.4em] transition-colors border-t border-slate-100 dark:border-slate-800">
+        Full Directory
       </button>
     </div>
   );
