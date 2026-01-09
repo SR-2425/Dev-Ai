@@ -4,72 +4,80 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 const TeamPulse: React.FC = () => {
   const teamData = [
-    { name: 'Frontend', velocity: 85, active: 4 },
-    { name: 'Backend', velocity: 92, active: 6 },
-    { name: 'DevOps', velocity: 78, active: 2 },
-    { name: 'QA', velocity: 64, active: 3 },
+    { name: 'FRONTEND', velocity: 85 },
+    { name: 'BACKEND', velocity: 92 },
+    { name: 'DEVOPS', velocity: 78 },
+    { name: 'QUALITY', velocity: 64 },
   ];
 
   const distribution = [
     { name: 'Feature Work', value: 45 },
     { name: 'Bug Fixes', value: 25 },
-    { name: 'Technical Debt', value: 20 },
-    { name: 'Review Time', value: 10 },
+    { name: 'Refactoring', value: 20 },
+    { name: 'Code Review', value: 10 },
   ];
 
-  const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ec4899'];
+  const COLORS = ['#22d3ee', '#0891b2', '#164e63', '#0e7490'];
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-3xl font-bold text-white tracking-tight">Team Pulse</h1>
-        <p className="text-slate-400">Aggregated insights across engineering divisions.</p>
+    <div className="space-y-12 animate-in fade-in duration-1000">
+      <header className="flex flex-col gap-2">
+        <h1 className="text-5xl font-light text-white tracking-tight">Collaboration <span className="font-bold text-aquatic-400">Momentum</span></h1>
+        <p className="text-white/40 text-lg">Aggregated flow analytics across internal engineering workspaces.</p>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-          <h3 className="text-xl font-bold text-white mb-6">Vertical Velocity</h3>
-          <div className="h-[300px]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="glass-panel p-10 rounded-[2.5rem]">
+          <h3 className="text-sm font-bold text-white/40 uppercase tracking-[0.4em] mb-12">Vertical Output Velocity</h3>
+          <div className="h-[350px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={teamData} layout="vertical">
                 <XAxis type="number" hide />
-                <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8' }} />
+                <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontWeight: 900, letterSpacing: '0.1em' }} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b' }}
-                  itemStyle={{ color: '#6366f1' }}
+                  cursor={{ fill: 'rgba(255,255,255,0.03)' }}
+                  contentStyle={{ backgroundColor: 'rgba(2, 26, 37, 0.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px' }}
                 />
-                <Bar dataKey="velocity" fill="#6366f1" radius={[0, 8, 8, 0]} barSize={30} />
+                <Bar 
+                  dataKey="velocity" 
+                  fill="#22d3ee" 
+                  radius={[0, 20, 20, 0]} 
+                  barSize={20} 
+                  animationDuration={2000}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-          <h3 className="text-xl font-bold text-white mb-6">Workload Allocation</h3>
-          <div className="h-[300px] flex items-center">
+        <div className="glass-panel p-10 rounded-[2.5rem]">
+          <h3 className="text-sm font-bold text-white/40 uppercase tracking-[0.4em] mb-12">Effort Distribution</h3>
+          <div className="h-[350px] flex items-center">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={distribution}
                   cx="50%"
                   cy="50%"
-                  innerRadius={60}
-                  outerRadius={100}
-                  paddingAngle={5}
+                  innerRadius={70}
+                  outerRadius={110}
+                  paddingAngle={8}
                   dataKey="value"
+                  animationDuration={1500}
                 >
                   {distribution.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="transparent" />
                   ))}
                 </Pie>
                 <Tooltip />
               </PieChart>
             </ResponsiveContainer>
-            <div className="space-y-2">
+            <div className="space-y-4 pr-10">
               {distribution.map((d, i) => (
-                <div key={d.name} className="flex items-center gap-2">
+                <div key={d.name} className="flex items-center gap-4 animate-in fade-in slide-in-from-right-4 duration-700" style={{ animationDelay: `${i*150}ms` }}>
                   <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[i] }}></div>
-                  <span className="text-xs text-slate-400 whitespace-nowrap">{d.name}: {d.value}%</span>
+                  <span className="text-[10px] font-black uppercase text-white/40 tracking-widest">{d.name}</span>
+                  <span className="text-xs font-bold text-white">{d.value}%</span>
                 </div>
               ))}
             </div>
@@ -77,25 +85,18 @@ const TeamPulse: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-        <h3 className="text-xl font-bold text-white mb-6">Team Health Highlights</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-xl">
-            <p className="text-xs font-bold text-emerald-400 uppercase mb-1">Collaboration</p>
-            <p className="text-lg font-bold text-white">Consistent High-Peer Review</p>
-            <p className="text-sm text-slate-500 mt-2">Team is reviewing 90% of PRs within 12 hours.</p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {[
+          { label: 'Synergy', title: 'High-Velocity Peer Reviews', desc: 'Team is finalizing code audits within a 12h temporal window.', color: 'aquatic-400' },
+          { label: 'Workload Warning', title: 'Backlog Depth Increase', desc: 'Technical debt metrics have expanded by 15% this cycle.', color: 'rose-400' },
+          { label: 'Flow Insight', title: 'Peak Output Window', desc: 'Contribution density maximizes between 09:00 - 11:30 CET.', color: 'white/40' }
+        ].map((item, idx) => (
+          <div key={item.label} className="glass-panel p-10 rounded-[2.5rem] space-y-4 animate-in zoom-in-95 duration-1000" style={{ animationDelay: `${idx*200}ms` }}>
+            <p className={`text-[10px] font-black uppercase tracking-[0.3em] text-${item.color}`}>{item.label}</p>
+            <p className="text-xl font-bold text-white leading-tight">{item.title}</p>
+            <p className="text-xs text-white/40 leading-relaxed font-medium">{item.desc}</p>
           </div>
-          <div className="p-4 bg-amber-500/5 border border-amber-500/20 rounded-xl">
-            <p className="text-xs font-bold text-amber-400 uppercase mb-1">Warning</p>
-            <p className="text-lg font-bold text-white">Backlog Creep</p>
-            <p className="text-sm text-slate-500 mt-2">Backend technical debt tickets increased by 15% this sprint.</p>
-          </div>
-          <div className="p-4 bg-indigo-500/5 border border-indigo-500/20 rounded-xl">
-            <p className="text-xs font-bold text-indigo-400 uppercase mb-1">Insight</p>
-            <p className="text-lg font-bold text-white">Peak Efficiency</p>
-            <p className="text-sm text-slate-500 mt-2">Wednesday mornings show the highest code merge rates.</p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
